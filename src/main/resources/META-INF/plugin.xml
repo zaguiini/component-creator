@@ -1,0 +1,28 @@
+<idea-plugin>
+    <id>com.example.componentcreator</id>
+    <name>Component creator</name>
+    <version>1.0</version>
+    <vendor email="luisfelipezaguini@gmail.com" url="https://zaguini.me">Luis Felipe Zaguini</vendor>
+
+    <description>Create a new component and add it to index file</description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="171.0"/>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>JavaScript</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="com.example.ComponentCreator" class="com.example.ComponentCreator" text="Component"
+                description="Create a new component">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+    </actions>
+
+</idea-plugin>
