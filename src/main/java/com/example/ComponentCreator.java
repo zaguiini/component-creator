@@ -7,7 +7,10 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.VisualPosition;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -22,6 +25,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiElement;
@@ -45,41 +49,48 @@ public class ComponentCreator extends AnAction {
         return name != null && name.matches("^[A-Za-z]+$");
     }
 
-    private void createFile(File file, String componentName, String fileName) throws IOException {
+    private void createFile(File file, String componentName, String template) throws IOException {
         MustacheFactory mustache = new DefaultMustacheFactory();
         HashMap<String, Object> scopes = new HashMap<>();
         scopes.put("componentName", componentName);
 
-        Reader reader = new InputStreamReader(getClass().getResource("/templates/" + fileName + ".mustache").openStream());
+        Reader reader = new InputStreamReader(getClass().getResource("/templates/" + template).openStream());
         Writer writer = new OutputStreamWriter(new FileOutputStream(file));
-        mustache.compile(reader, fileName).execute(writer, scopes);
+        mustache.compile(reader, template).execute(writer, scopes);
         reader.close();
         writer.close();
     }
 
     private void addToFile(Project project, VirtualFile virtualFile, String componentName) {
         PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
+        FileDocumentManager.getInstance().saveDocument(PsiDocumentManager.getInstance(project).getDocument(psiFile));
         PsiElement[] children = psiFile.getChildren();
-        PsiElement exportBefore = null;
 
-        for (PsiElement el : children) {
+        int position = -1;
+
+        for(int i = 0; i < children.length; i++) {
+            PsiElement el = children[i];
+
             if (el instanceof ES6ExportDeclaration) {
                 ES6ExportDeclaration export = (ES6ExportDeclaration) el;
-                String exportName = export.getExportSpecifiers()[0].getDeclaredName();
+                String existingExportName = export.getExportSpecifiers()[0].getDeclaredName();
 
-                if (exportName.compareTo(componentName) <= 0) {
-                    exportBefore = el;
+                if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
+                    position = i;
+                    break;
                 }
             }
         }
-
-        if(exportBefore == null && children.length > 0) {
-            exportBefore = children[children.length - 1];
-        }
-
-        PsiElement finalExportBefore = exportBefore;
+;
+        int finalPosition = position;
         WriteCommandAction.runWriteCommandAction(project, () -> {
-            psiFile.addAfter(ExportDeclaration.create(project, componentName), finalExportBefore);
+            PsiElement newExport = ExportDeclaration.create(project, componentName);
+
+            if(finalPosition == -1) {
+                psiFile.addAfter(newExport, children.length > 0 ? children[children.length - 1] : null);
+            } else {
+                psiFile.addBefore(newExport, children[finalPosition]);
+            }
         });
 
         FileDocumentManager.getInstance().saveDocument(PsiDocumentManager.getInstance(project).getDocument(psiFile));
@@ -103,7 +114,8 @@ public class ComponentCreator extends AnAction {
 
         Path componentFolder = Paths.get(path).resolve(Paths.get(componentName));
         File componentIndexFile = new File(componentFolder.resolve("index.ts").toString());
-        File componentFile = new File(componentFolder.resolve(componentName + ".tsx").toString());
+        String componentFilePath = componentFolder.resolve(componentName + ".tsx").toString();
+        File componentFile = new File(componentFilePath);
 
         if(!componentIndexFile.getParentFile().mkdirs()) {
             Messages.showInfoMessage("Failed to create directory or it already exists", ComponentCreator.ERROR_TITLE);
@@ -137,5 +149,9 @@ public class ComponentCreator extends AnAction {
                 e.printStackTrace();
             }
         }
+
+        FileEditorManager.getInstance(project).openFile(LocalFileSystem.getInstance().refreshAndFindFileByIoFile(componentFile), true);
+        Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();
+        editor.getCaretModel().moveToVisualPosition(new VisualPosition(5, 11));
     }
 }
