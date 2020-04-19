@@ -15,7 +15,6 @@ repositories {
 dependencies {
     compileOnly fileTree(dir: 'lib', include: ['*.jar'])
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    compile group: 'com.github.spullara.mustache.java', name: 'compiler', version: '0.9.6'
 }
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/

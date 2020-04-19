@@ -7,14 +7,16 @@
     <description>Create a new component and add it to index file</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="171.0"/>
+    <idea-version since-build="171"/>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
+        <internalFileTemplate name="ComponentIndex.ts" />
+        <internalFileTemplate name="ComponentTemplate.ts" />
+        <internalFileTemplate name="ParentExport.ts" />
     </extensions>
 
     <actions>
