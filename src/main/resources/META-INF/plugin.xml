@@ -25,6 +25,10 @@
                 description="Create a new component">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
+        <action id="com.example.HookCreator" class="com.example.HookCreator" text="Hook"
+                description="Create a new hook">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
     </actions>
 
 </idea-plugin>

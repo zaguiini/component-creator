@@ -1,9 +1,9 @@
 import React from 'react'
 
-interface ${ComponentName}Props {#[[$Props$]]#}
+interface ${ComponentName}Props {}
 
 const ${ComponentName} = (props: ${ComponentName}Props) => {
-    return (#[[$Children$]]#)
+    return (#[[$END$]]#)
 }
 
 export default ${ComponentName}

@@ -12,8 +12,8 @@ public class Helpers {
     }
 
     static String getComponentName() {
-        return Messages.showInputDialog((Project) null, "Input the name of component (e.g. MyComponent)",
-                "Name of the Component", null);
+        return Messages.showInputDialog((Project) null, "Enter the desired name",
+                "Name of the new item", null);
     }
 
     static boolean isValidComponentName(String name) {
