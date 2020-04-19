@@ -12,28 +12,11 @@ import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import java.util.HashMap;
 import java.util.Properties;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 
 public class ComponentCreator extends AnAction {
-    static String ERROR_TITLE = "Failed to create Component";
-
-    private VirtualFile getPath(VirtualFile entry) {
-        return entry.isDirectory() ? entry : entry.getParent();
-    }
-
-    private String getComponentName(Project project) {
-        return Messages.showInputDialog(project, "Input the name of component (e.g. MyComponent)",
-                "Name of the Component", null);
-    }
-
-    private boolean isValidComponentName(String name) {
-        // TODO: Have a better matcher
-        return name != null && name.matches("^[A-Za-z]+$");
-    }
-
     private void addToFile(Project project, VirtualFile virtualFile, String componentName) {
         PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
         FileDocumentManager.getInstance().saveDocument(PsiDocumentManager.getInstance(project).getDocument(psiFile));
@@ -84,10 +67,10 @@ public class ComponentCreator extends AnAction {
             return;
         }
 
-        VirtualFile path = getPath(entry);
-        String componentName = getComponentName(project);
+        VirtualFile path = Helpers.getPath(entry);
+        String componentName = Helpers.getComponentName();
 
-        if(!isValidComponentName(componentName)) {
+        if(!Helpers.isValidComponentName(componentName)) {
             return;
         }
 
@@ -96,8 +79,8 @@ public class ComponentCreator extends AnAction {
 
         PsiManager manager = PsiManager.getInstance(project);
 
-        if(path.findFileByRelativePath(componentName) != null) {
-            Messages.showInfoMessage("Directory already exists", ComponentCreator.ERROR_TITLE);
+        if(Helpers.hasExistingFolder(path, componentName)) {
+            Messages.showInfoMessage("Directory already exists", Helpers.ERROR_TITLE);
             return;
         }
 
@@ -113,8 +96,8 @@ public class ComponentCreator extends AnAction {
             e.printStackTrace();
         }
 
-        VirtualFile parentIndexTSFile = entry.isDirectory() ? entry.findFileByRelativePath("index.ts") : entry.findFileByRelativePath("../index.ts");
-        VirtualFile parentIndexTSXFile = entry.isDirectory() ? entry.findFileByRelativePath("index.tsx") : entry.findFileByRelativePath("../index.tsx");
+        VirtualFile parentIndexTSFile = path.findFileByRelativePath("index.ts");
+        VirtualFile parentIndexTSXFile = path.findFileByRelativePath("index.tsx");
 
         if(parentIndexTSFile != null) {
             addToFile(project, parentIndexTSFile, componentName);
@@ -122,7 +105,7 @@ public class ComponentCreator extends AnAction {
             addToFile(project, parentIndexTSXFile, componentName);
         } else {
             try {
-                writeFile("ParentExport.ts", "index.ts", project, attributes, manager.findDirectory(entry).findSubdirectory(componentName));
+                writeFile("ParentExport.ts", "index.ts", project, attributes, manager.findDirectory(path));
             } catch (Exception e) {
                 e.printStackTrace();
             }
