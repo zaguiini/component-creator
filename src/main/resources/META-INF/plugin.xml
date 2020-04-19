@@ -13,10 +13,10 @@
     <depends>com.intellij.modules.platform</depends>
     <depends>JavaScript</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <internalFileTemplate name="ComponentIndex.ts" />
-        <internalFileTemplate name="ComponentTemplate.tsx" />
-        <internalFileTemplate name="HookTemplate.ts" />
-        <internalFileTemplate name="ParentExport.ts" />
+        <internalFileTemplate name="ComponentIndex" />
+        <internalFileTemplate name="ComponentTemplate" />
+        <internalFileTemplate name="HookTemplate" />
+        <internalFileTemplate name="ParentExport" />
     </extensions>
 
     <actions>
