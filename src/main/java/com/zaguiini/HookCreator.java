@@ -1,4 +1,4 @@
-package com.example;
+package com.zaguiini;
 
 public class HookCreator extends CreatorBase {
     @Override

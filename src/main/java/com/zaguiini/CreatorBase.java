@@ -1,4 +1,4 @@
-package com.example;
+package com.zaguiini;
 
 import com.intellij.ide.fileTemplates.FileTemplate;
 import com.intellij.ide.fileTemplates.FileTemplateManager;

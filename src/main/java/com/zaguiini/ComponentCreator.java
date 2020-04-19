@@ -1,4 +1,4 @@
-package com.example;
+package com.zaguiini;
 
 public class ComponentCreator extends CreatorBase {
     @Override

@@ -1,4 +1,4 @@
-package com.example;
+package com.zaguiini;
 
 import com.intellij.lang.Language;
 import com.intellij.openapi.project.Project;

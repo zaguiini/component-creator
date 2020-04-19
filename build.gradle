@@ -3,8 +3,6 @@ plugins {
     id 'org.jetbrains.intellij' version '0.4.18'
 }
 
-group 'com.example'
-
 sourceCompatibility = 1.8
 
 repositories {
