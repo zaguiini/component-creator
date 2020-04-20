@@ -5,6 +5,7 @@ import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.fileTemplates.actions.CreateFromTemplateActionBase;
 import com.intellij.lang.ecmascript6.psi.ES6ExportDeclaration;
+import com.intellij.lang.ecmascript6.psi.ES6ExportSpecifier;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -34,11 +35,15 @@ public abstract class CreatorBase extends AnAction {
 
             if (el instanceof ES6ExportDeclaration) {
                 ES6ExportDeclaration export = (ES6ExportDeclaration) el;
-                String existingExportName = export.getExportSpecifiers()[0].getDeclaredName();
+                ES6ExportSpecifier[] specifiers = export.getExportSpecifiers();
 
-                if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
-                    position = i;
-                    break;
+                if(specifiers.length > 0) {
+                    String existingExportName = specifiers[specifiers.length - 1].getDeclaredName();
+
+                    if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
+                        position = i;
+                        break;
+                    }
                 }
             }
         }
