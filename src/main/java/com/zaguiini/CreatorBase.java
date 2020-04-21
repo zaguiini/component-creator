@@ -5,11 +5,11 @@ import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.fileTemplates.actions.CreateFromTemplateActionBase;
 import com.intellij.lang.ecmascript6.psi.ES6ExportDeclaration;
-import com.intellij.lang.ecmascript6.psi.ES6ExportSpecifier;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.project.Project;
@@ -19,36 +19,17 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 
 public abstract class CreatorBase extends AnAction {
-    protected String getTemplate() {
-        return "";
-    }
+
+    protected abstract String getTemplate();
 
     private void addToFile(Project project, VirtualFile virtualFile, String componentName) {
         PsiFile psiFile = PsiManager.getInstance(project).findFile(virtualFile);
-        FileDocumentManager.getInstance().saveDocument(PsiDocumentManager.getInstance(project).getDocument(psiFile));
+        Document document = PsiDocumentManager.getInstance(project).getDocument(psiFile);
+        FileDocumentManager.getInstance().saveDocument(document);
         PsiElement[] children = psiFile.getChildren();
 
-        int position = -1;
+        int finalPosition = getPosition(componentName, children);
 
-        for(int i = 0; i < children.length; i++) {
-            PsiElement el = children[i];
-
-            if (el instanceof ES6ExportDeclaration) {
-                ES6ExportDeclaration export = (ES6ExportDeclaration) el;
-                ES6ExportSpecifier[] specifiers = export.getExportSpecifiers();
-
-                if(specifiers.length > 0) {
-                    String existingExportName = specifiers[specifiers.length - 1].getDeclaredName();
-
-                    if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
-                        position = i;
-                        break;
-                    }
-                }
-            }
-        }
-
-        int finalPosition = position;
         WriteCommandAction.runWriteCommandAction(project, () -> {
             PsiElement newExport = ExportDeclaration.create(project, componentName);
 
@@ -59,7 +40,25 @@ public abstract class CreatorBase extends AnAction {
             }
         });
 
-        FileDocumentManager.getInstance().saveDocument(PsiDocumentManager.getInstance(project).getDocument(psiFile));
+        FileDocumentManager.getInstance().saveDocument(document);
+    }
+
+    private int getPosition(String componentName, PsiElement[] children) {
+        int position = -1;
+        for(int i = 0; i < children.length; i++) {
+            PsiElement el = children[i];
+
+            if (el instanceof ES6ExportDeclaration) {
+                ES6ExportDeclaration export = (ES6ExportDeclaration) el;
+                String existingExportName = export.getExportSpecifiers()[0].getDeclaredName();
+
+                if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
+                    position = i;
+                    break;
+                }
+            }
+        }
+        return position;
     }
 
     private PsiElement writeFile(String template, String fileName, Project project, Properties attributes, PsiDirectory dir) throws Exception {
@@ -105,6 +104,9 @@ public abstract class CreatorBase extends AnAction {
             FileEditorManager.getInstance(project).openFile(el.getContainingFile().getVirtualFile(), true);
         } catch (Exception e) {
             e.printStackTrace();
+            Messages.showInfoMessage("An erro occured while creating index.ts", Helpers.ERROR_TITLE);
+            return;
+
         }
 
         VirtualFile parentIndexTSFile = parentFolder.findFileByRelativePath("index.ts");
