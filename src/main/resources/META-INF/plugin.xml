@@ -17,6 +17,11 @@
         <internalFileTemplate name="ComponentTemplate" />
         <internalFileTemplate name="HookTemplate" />
         <internalFileTemplate name="ParentExport" />
+
+        <intentionAction>
+            <className>com.zaguiini.ComponentSuggestion</className>
+            <category>SDK intentions</category>
+        </intentionAction>
     </extensions>
 
     <actions>

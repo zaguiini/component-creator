@@ -1,6 +1,6 @@
 import React from 'react'
 
-interface ${ComponentName}Props {}
+interface ${ComponentName}Props {${Props}}
 
 const ${ComponentName} = (props: ${ComponentName}Props) => {
     return (#[[$END$]]#)
