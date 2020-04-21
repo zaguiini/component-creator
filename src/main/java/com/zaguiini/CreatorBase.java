@@ -5,6 +5,7 @@ import com.intellij.ide.fileTemplates.FileTemplateManager;
 import com.intellij.ide.fileTemplates.FileTemplateUtil;
 import com.intellij.ide.fileTemplates.actions.CreateFromTemplateActionBase;
 import com.intellij.lang.ecmascript6.psi.ES6ExportDeclaration;
+import com.intellij.lang.ecmascript6.psi.ES6ExportSpecifier;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -45,19 +46,24 @@ public abstract class CreatorBase extends AnAction {
 
     private int getPosition(String componentName, PsiElement[] children) {
         int position = -1;
+
         for(int i = 0; i < children.length; i++) {
-            PsiElement el = children[i];
+            PsiElement element = children[i];
 
-            if (el instanceof ES6ExportDeclaration) {
-                ES6ExportDeclaration export = (ES6ExportDeclaration) el;
-                String existingExportName = export.getExportSpecifiers()[0].getDeclaredName();
+            if (element instanceof ES6ExportDeclaration) {
+                ES6ExportSpecifier[] specifiers = ((ES6ExportDeclaration) element).getExportSpecifiers();
 
-                if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
-                    position = i;
-                    break;
+                if(specifiers.length > 0) {
+                    String existingExportName = specifiers[0].getDeclaredName();
+
+                    if(componentName.toLowerCase().compareTo(existingExportName.toLowerCase()) <= 0) {
+                        position = i;
+                        break;
+                    }
                 }
             }
         }
+
         return position;
     }
 
