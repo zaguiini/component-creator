@@ -1,4 +1,4 @@
-package com.zaguiini;
+package com.toptal;
 
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
@@ -28,8 +28,6 @@ public class ComponentSuggestion extends PsiElementBaseIntentionAction implement
 
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
         try {
-            assert element.getContext() != null;
-            assert element.getContext().getReference() != null;
             return element.getContext().getReference().resolve() instanceof JSXmlLiteralExpression;
         } catch(AssertionError e) {
             return false;
