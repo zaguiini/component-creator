@@ -20,7 +20,7 @@
 
         <intentionAction>
             <className>com.zaguiini.ComponentSuggestion</className>
-            <category>SDK intentions</category>
+            <category>Component suggestion</category>
         </intentionAction>
     </extensions>
 

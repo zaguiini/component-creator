@@ -1,5 +1,6 @@
 package com.zaguiini;
 
+import com.intellij.lang.javascript.frameworks.react.JSXPropTypesUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -18,7 +19,7 @@ public class Helpers {
 
     static boolean isValidComponentName(String name) {
         // TODO: Have a better matcher
-        return name != null && name.matches("^[A-Za-z]+$");
+        return name != null && JSXPropTypesUtil.isPossibleReactClassName(name);
     }
 
     static boolean hasExistingFolder(VirtualFile path, String componentName) {

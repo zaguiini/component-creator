@@ -1,14 +1,17 @@
 package com.zaguiini;
 
 import com.intellij.codeInsight.intention.IntentionAction;
+import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
+import com.intellij.lang.javascript.psi.JSXmlLiteralExpression;
+import com.intellij.lang.javascript.psi.ecma6.impl.JSXXmlLiteralExpressionImpl;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiElement;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.NotNull;
 
-public class ComponentSuggestion implements IntentionAction {
+public class ComponentSuggestion extends PsiElementBaseIntentionAction implements IntentionAction {
     @Nls(capitalization = Nls.Capitalization.Sentence)
     @NotNull
     @Override
@@ -20,17 +23,25 @@ public class ComponentSuggestion implements IntentionAction {
     @NotNull
     @Override
     public String getFamilyName() {
-        return "Component creator";
+        return "ComponentSuggestion";
     }
 
-    @Override
-    public boolean isAvailable(@NotNull Project project, Editor editor, PsiFile file) {
-        return true;
+    public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
+        try {
+            assert element.getContext() != null;
+            assert element.getContext().getReference() != null;
+            return element.getContext().getReference().resolve() instanceof JSXmlLiteralExpression;
+        } catch(AssertionError e) {
+            return false;
+        }
     }
 
-    @Override
-    public void invoke(@NotNull Project project, Editor editor, PsiFile file) throws IncorrectOperationException {
-        System.out.println("There we go");
+    public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
+        JSXXmlLiteralExpressionImpl component = (JSXXmlLiteralExpressionImpl) element.getContext();
+
+        if(component == null) {
+            return;
+        }
     }
 
     @Override
