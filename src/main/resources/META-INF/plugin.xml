@@ -1,8 +1,8 @@
 <idea-plugin>
-    <id>com.toptal.davinci</id>
+    <id>com.zaguini.davinci</id>
     <name>Davinci</name>
     <version>0.0.1</version>
-    <vendor email="luisfelipe.zaguini@toptal.com">Luis Felipe Zaguini</vendor>
+    <vendor email="luisfelipezaguini@gmail.com">Luis Felipe Zaguini</vendor>
     <description>Create a new component, page, or module via Davinci CLI</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
@@ -21,15 +21,15 @@
     </extensions>
 
     <actions>
-        <action id="com.toptal.davinci.ComponentGenerator" class="com.toptal.davinci.ComponentGenerator" text="Component"
+        <action id="com.zaguiini.davinci.ComponentGenerator" class="com.zaguiini.davinci.ComponentGenerator" text="Component"
                 description="Create a new component">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
-        <action id="com.toptal.davinci.ModuleGenerator" class="com.toptal.davinci.ModuleGenerator" text="Module"
+        <action id="com.zaguiini.davinci.ModuleGenerator" class="com.zaguiini.davinci.ModuleGenerator" text="Module"
                 description="Create a new module">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
-        <action id="com.toptal.davinci.PageGenerator" class="com.toptal.davinci.PageGenerator" text="Page"
+        <action id="com.zaguiini.davinci.PageGenerator" class="com.zaguiini.davinci.PageGenerator" text="Page"
                 description="Create a new page">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
