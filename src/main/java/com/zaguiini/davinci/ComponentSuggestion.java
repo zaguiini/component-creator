@@ -2,8 +2,9 @@ package com.zaguiini.davinci;
 
 import com.intellij.codeInsight.intention.IntentionAction;
 import com.intellij.codeInsight.intention.PsiElementBaseIntentionAction;
-import com.intellij.lang.javascript.psi.JSXmlLiteralExpression;
-import com.intellij.lang.javascript.psi.ecma6.impl.JSXXmlLiteralExpressionImpl;
+// Create lib folder with files
+// import com.intellij.lang.javascript.psi.JSXmlLiteralExpression;
+// import com.intellij.lang.javascript.psi.ecma6.impl.JSXXmlLiteralExpressionImpl;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiElement;
@@ -27,19 +28,20 @@ public class ComponentSuggestion extends PsiElementBaseIntentionAction implement
     }
 
     public boolean isAvailable(@NotNull Project project, Editor editor, @NotNull PsiElement element) {
-        try {
-            return element.getContext().getReference().resolve() instanceof JSXmlLiteralExpression;
-        } catch(AssertionError e) {
-            return false;
-        }
+        return false;
+//        try {
+//            return element.getContext().getReference().resolve() instanceof JSXmlLiteralExpression;
+//        } catch(AssertionError e) {
+//            return false;
+//        }
     }
 
     public void invoke(@NotNull Project project, Editor editor, @NotNull PsiElement element) throws IncorrectOperationException {
-        JSXXmlLiteralExpressionImpl component = (JSXXmlLiteralExpressionImpl) element.getContext();
-
-        if(component == null) {
-            return;
-        }
+//        JSXXmlLiteralExpressionImpl component = (JSXXmlLiteralExpressionImpl) element.getContext();
+//
+//        if(component == null) {
+//            return;
+//        }
     }
 
     @Override

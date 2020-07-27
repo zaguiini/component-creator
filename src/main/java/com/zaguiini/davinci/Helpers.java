@@ -13,7 +13,7 @@ public class Helpers {
 
     static String getElementName() {
         return Messages.showInputDialog((Project) null, "Enter the desired name",
-                "Name of the new item", null);
+                "Name of the New Item", null);
     }
 
     static boolean hasExistingFolder(VirtualFile path, String componentName) {

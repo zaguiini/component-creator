@@ -1,6 +1,6 @@
-# com.toptal.davinci
+# com.zaguiini.davinci
 
-Davinci tools, now on Intellij suite!
+[Davinci](https://www.npmjs.com/package/@toptal/davinci) tools, now on Intellij suite!
 
 ## Installation
 
@@ -25,3 +25,7 @@ Run the `buildPlugin` Gradle task, and the zip should be located at `build/distr
 ### Component suggestion
 
 As soon as the users instantiates an element that doesn't resolve to any reference inside the file, suggest the creation of the given component, inferring as many props as possible, in the nearest `components` folder. 
+
+## License
+
+MIT
