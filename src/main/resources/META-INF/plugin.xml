@@ -1,37 +1,36 @@
 <idea-plugin>
-    <id>com.zaguiini.componentcreator</id>
-    <name>Component creator</name>
+    <id>com.toptal.davinci</id>
+    <name>Davinci</name>
     <version>0.0.1</version>
-    <vendor email="luisfelipezaguini@gmail.com" url="https://zaguini.me">Luis Felipe Zaguini</vendor>
-    <description>Create a new component or hook and add it to index file</description>
+    <vendor email="luisfelipe.zaguini@toptal.com">Luis Felipe Zaguini</vendor>
+    <description>Create a new component, page, or module via Davinci CLI</description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-    <idea-version since-build="171"/>
+    <idea-version since-build="201.0" />
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
     <depends>JavaScript</depends>
     <extensions defaultExtensionNs="com.intellij">
-        <internalFileTemplate name="ComponentIndex" />
-        <internalFileTemplate name="ComponentTemplate" />
-        <internalFileTemplate name="HookTemplate" />
-        <internalFileTemplate name="ParentExport" />
-
-        <intentionAction>
-            <className>com.zaguiini.ComponentSuggestion</className>
-            <category>Component suggestion</category>
-        </intentionAction>
+<!--        <intentionAction>-->
+<!--            <className>ComponentSuggestion</className>-->
+<!--            <category>Component suggestion</category>-->
+<!--        </intentionAction>-->
     </extensions>
 
     <actions>
-        <!-- Add your actions here -->
-        <action id="com.zaguiini.ComponentCreator" class="com.zaguiini.ComponentCreator" text="Component"
+        <action id="com.toptal.davinci.ComponentGenerator" class="com.toptal.davinci.ComponentGenerator" text="Component"
                 description="Create a new component">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
-        <action id="com.zaguiini.HookCreator" class="com.zaguiini.HookCreator" text="Hook"
-                description="Create a new hook">
+        <action id="com.toptal.davinci.ModuleGenerator" class="com.toptal.davinci.ModuleGenerator" text="Module"
+                description="Create a new module">
+            <add-to-group group-id="NewGroup" anchor="first"/>
+        </action>
+        <action id="com.toptal.davinci.PageGenerator" class="com.toptal.davinci.PageGenerator" text="Page"
+                description="Create a new page">
             <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
     </actions>
