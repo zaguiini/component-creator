@@ -4,7 +4,7 @@ Davinci tools, now on Intellij suite!
 
 ## Installation
 
-Grab the distribution package and go to `Plugins > Install from disk` then select it.
+Grab the [distribution package](#bundling-process) and go to `Plugins > Install from disk` then select it.
 
 ## Usage
 
